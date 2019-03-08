@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Salmon Cookie Stand
+        </title>
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <header>
+            <h1>
+                <p>
+                <img src="img/salmon.png"  height="90" width="400"  >
+            </p>
+            </h1>
+            
+            <nav>
+                <ul id="nav">
+                     <li><a href="#aboutus" onclick="showAboutUs()">About Us</a></li>
+                     <li><a href="#location" onclick="showLocations()">Locations</a></li>
+                     <li><a href="#hours" onclick="showHours()">Hours</a></li>                        
+                     <li><a href="#specials" onclick="showSpecials()">Sales</a></li>
+                     <li><a href="#contactus" onclick="showContactUs()">Contact Us</a></li>
+                   <!-- <li><a href="sales.html"></a> </li> -->
+                </ul>
+            </nav>
+
+        </header>
+        <main>
+                <div id="aboutus" class="toggle" style="display:none">  
+                        <h2>A golden biscuit with the richness of pure, creamery butter, that melts in your 
+                            mouth.</h2>
+                        <h2>Ingredients:</h2>
+                            <h3 id="head3">
+                                <ul>
+                                    <li>Wheat flour, butter, sugar, Ground Salmon</li>
+                                    <li> Contains wheat, almonds, hazelnuts milk and eggs.</li>                                                                                         
+                                </ul>
+                            </h3>
+
+                            <h2>Nutritional Facts:</h2>
+                            <h3 id="head3">
+                                <ul>
+                                    <li>Calories 150            -> Calories from Fat 20</li>
+                                    <li>Total Fat 7g            -> 30% </li>
+                                    <li>Saturated Fat 4g        -> 0% </li>
+                                    <li>Trans Fat 0g            -> 0% </li>
+                                    <li>Cholesterol 15mg        -> 5% </li>                    
+                                    <li>Sodium 35mg             -> 1% </li> 
+                                    <li>Total Carbohydrate 20g  -> 7% </li> 
+                                    <li>Dietary Fiber 1g        -> 4% </li> 
+                                    <li>Protein 2g              -> 4% </li> 
+                                </ul>
+                            </h3>
+                </div>
+                <div id="location" class="toggle" style="display:none">
+                        <h2>Locations</h2>
+                        <h3 id="head3">
+                            <ul>
+                                    <li>1st and Pike</li>
+                                    <li>SeaTac Airport</li>
+                                    <li>Seattle Center</li>
+                                    <li>Capitol Hill</li>
+                                    <li>Alki</li> 
+                            </ul>
+
+                        </h3>
+                </div>
+                <div id="hours" class="toggle" style="display:none">
+                        <h2>Total Hours</h2>
+                        <h3 id="head3">
+                                <ul>
+                                        <ul>
+                                                <li>M-F : 6AM - 8PM</li>
+                                                <li>Saturday: 6AM - 8PM</li>
+                                                <li>Sunday: 6AM - 8PM</li>                                    
+                                        </ul>
+                                </ul>
+    
+                            </h3>
+                </div>
+                <div id="specials" class="toggle" style="display:none">
+                        <h2>
+                             <li><a href="sales.html">Sales Data</a> </li>
+                        </h2>
+                </div>
+                <div id="contactus" class="toggle" style="display:none">
+                        <h2>Please contact person next to you</h2>
+                </div>
+             
+        </main>
+        <script src="js/app.js"></script>
+    </body>
+</html>

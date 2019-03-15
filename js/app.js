@@ -1,70 +1,74 @@
 'use strict';
+var data = [];
 
 var hoursList = ['6.00 am','7.00 am','8.00 am','9.00 am','10.00 am','11.00 am','12.00 am','1.00 pm',
 '2.00 pm','3.00 pm','4.00 pm','5.00 pm','7.00 pm','8.00 pm'];
-var Pike1StreetLocation = {
-    minimumPerCustomer: 23,
-    maximumPerCustomer: 65,
-    averagePerCustomer: 6,
-    avgCookies:0,
-    totalCookies:0,
-    name: 'Pike'  
-}
 
+var locationsData = [];
 
-function salesDataPerHour(hourTime,minPerCustomer,maxPerCustomer) {
-    var locationSalesDetailsForDay = [];
-    for (var i=0;i<hourTime.length;i++){
-        locationSalesDetailsForDay[i] = Math.round(Math.random() * (maxPerCustomer - minPerCustomer) + 1);
-    }
-    return locationSalesDetailsForDay;
+function LocationsData(name, 
+    minimumPerCustomer, 
+    maximumPerCustomer,
+    averagePerCustomer,
+    avgCookies,
+    totalCookies
+    ) {
+        this.name = name
+        this.minimumPerCustomer = minimumPerCustomer;
+        this.maximumPerCustomer = maximumPerCustomer;
+        this.averagePerCustomer = averagePerCustomer;
+        this.avgCookies = avgCookies;
+        this.totalCookies = totalCookies;
+        this.locationSalesPerDay = function()
+        {
+            var locationSalesDetailsForDay = [];
+            for (var i=0;i<hoursList.length;i++){
+                locationSalesDetailsForDay[i] = Math.round(Math.random() * 
+                (this.maximumPerCustomer- this.minimumPerCustomer) + 1);
+            }
+            return locationSalesDetailsForDay;  
+        }
+        this.locationSalesPerDayDisplayData = function()
+        {
+            var locationHourlyTotals = [];
+            var totalSalesCount = 0;
+            var appendTextConstant = ' Cookies';
+            for (var i=0;i<this.locationSalesPerDay.length;i++){
+              locationHourlyTotals[i] = hoursList[i] +': ' + this.locationSalesPerDay()[i] + appendTextConstant ;
+              totalSalesCount = totalSalesCount + this.locationSalesPerDay()[i];
+            }
+            locationHourlyTotals[i] = 'Total: ' + totalSalesCount + appendTextConstant;
+            return locationHourlyTotals;
+        }
+    
+        this.avgCookies = function()
+        {
+            var totalCookies = 0;
+             for (var i=0;i<hoursList.length;i++){
+                totalCookies =  totalCookies + this.locationSalesPerDay()[i];
+            }
+            return Math.round(totalCookies / (hoursList.length));
+        }
+
+        this.totalCookies = function()
+        {
+            var totalCookiesSold = 0;
+            for (var i=0;i<hoursList.length;i++){
+                totalCookiesSold =  totalCookiesSold + this.locationSalesPerDay()[i];
+            }
+            return totalCookiesSold;
+        }              
   }
 
-  var pikeSalesPerDay = salesDataPerHour(hoursList,
-    Pike1StreetLocation.minimumPerCustomer,
-    Pike1StreetLocation.maximumPerCustomer);
+var Pike1StreetLocation = new LocationsData('Pike', 23, 65, 6, 0, 0);
+var seaTacAirportLocation = new LocationsData('SeaTacAirportLocation', 3, 24, 1, 0, 0);
+var seattleLocation = new LocationsData('SeattleLocation', 11, 38, 3, 0, 0);
+var capitalHillLocation = new LocationsData('CapitalHillLocation', 20, 38, 2, 0, 0);
+var AlkiLocation = new LocationsData('AlkiLocation', 2, 16, 4, 0, 0);
+
+locationsData.push(Pike1StreetLocation,seaTacAirportLocation,seattleLocation,capitalHillLocation,AlkiLocation);
 
 
-function SalesPerDayWithText(SalesData,appendTextConstant){
-    var locationHourlyTotals = [];
-    var totalSalesCount = 0;
-    for (var i=0;i<SalesData.length;i++){
-      locationHourlyTotals[i] = hoursList[i] +': ' + SalesData[i] + appendTextConstant ;
-      totalSalesCount = totalSalesCount + SalesData[i];
-    }
-    locationHourlyTotals[i] = 'Total: ' + totalSalesCount + appendTextConstant;
-    return locationHourlyTotals;
-
-}
-
-var pikeSalesData = SalesPerDayWithText(pikeSalesPerDay,' Cookies' );
-
-function averageCookiesPerHour(locationSales) {
-    var totalCookies = 0;
-    for (var i=0;i<hoursList.length;i++){
-      totalCookies =  totalCookies + locationSales[i];
-    }
-    return totalCookies / (hoursList.length);
-  }
-  
-
-Pike1StreetLocation.minimumPerCustomer = Math.min.apply(null,pikeSalesPerDay);
-Pike1StreetLocation.maximumPerCustomer = Math.max.apply(null,pikeSalesPerDay);
-Pike1StreetLocation.averagePerCustomer = Math.round(averageCookiesPerHour(pikeSalesPerDay));
-
-function totalCookiesSalesPerLocation(locationSales) {
-    var totalCookiesSold = 0;
-    for (var i=0;i<hoursList.length;i++){
-      totalCookiesSold =  totalCookiesSold + locationSales[i];
-    }
-    return totalCookiesSold;
-  }
-
-  Pike1StreetLocation.totalCookies = totalCookiesSalesPerLocation(pikeSalesPerDay);
-  
-
-
-  
   function consoleLogs(totalCookies,locationName,averageCookies,minCookiesCustomers,
     maxCookiesCustomers,locationSales) {
     console.log('Location Name :' + locationName);
@@ -76,141 +80,86 @@ function totalCookiesSalesPerLocation(locationSales) {
     console.log('    ');
   }
 
-  consoleLogs(Pike1StreetLocation.totalCookies,Pike1StreetLocation.name,Pike1StreetLocation.averagePerCustomer,
-    Pike1StreetLocation.minimumPerCustomer,
-    Pike1StreetLocation.maximumPerCustomer,pikeSalesPerDay);
+    
+    var table = document.getElementById('shell');
 
-    function buildList(hoursDataPerDay,listElements) {
-        for (var k = 0; k < hoursDataPerDay.length; k++) {
-          var listElement = document.createElement('li');
-          listElement.textContent = hoursDataPerDay[k];
-          listElements.appendChild(listElement);
-        }
-      
-        return listElements;
+    //Create td elements data
+function makeTable(locations,firstElement,lastElement){
+  var finalData ;
+  for(var i =0;i<locations.length;i++){
+      if(i===0){
+          finalData ='<th>'+firstElement+'</th>';
       }
-    var pikeList = document.getElementById('pike-location');
-    buildList(pikeSalesData, pikeList);
-
-  
-var seaTacAirportLocation = {
-    minimumPerCustomer: 3,
-    maximumPerCustomer: 24,
-    averagePerCustomer: 1,
-    avgCookies:0,
-    totalCookies:0,
-    name: 'SeaTacAirportLocation'  
+      finalData = finalData+'<td>'+locations[i]+'</td>';
+  }
+  tableData.push(finalData+'<td>'+lastElement+'</td>');
 }
+      var table = document.getElementById('cookieResults');
+      var tRow = document.getElementById('tHeading');
+    function makeHeaderRow() {     
+        
+        data.push('<td>' + 'Location Name' + '</td>')
+        for (var i=0; i < hoursList.length; i++) {
+          data.push(
+            '<td>' + hoursList[i] + '</td>' 
+          )
+        }
+        data.push('<td>' + 'Daily Location Total' + '</td>')
+        
+      }
 
+      function makeFooterRow(hourlyTotal) {     
+        var newColumn = document.createElement('td');
+        newColumn.innerHTML = 'Totals' ;
+        table.appendChild(newColumn);
+        for (var i=0; i <= hoursList.length; i++) {          
+          newColumn = document.createElement('td');
+          newColumn.innerHTML = hourlyTotal[i];
+          table.appendChild(newColumn);
+        }        
+      }
+      
+      function render(tableRow) {
+        for (var j=0; j < tableRow.length; j++) {
+          var newColumn = document.createElement('td');
+          newColumn.innerHTML = tableRow[j];
+          if (table!=null)
+          table.appendChild(newColumn);
+        }
+      }
+       
+            
+      function renderSalesData(tableRow) {
+        if (table!=null)
+        {
+          var hourlyTotal = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+              for (var tr=0; tr < tableRow.length; tr++) {
+                var newRow = document.createElement('tr');
+                  var dailyCount=0;
+                  var hourCount=0;
+                  newRow.innerHTML = tableRow[tr].name;
+                  table.appendChild(newRow);
+                  for (var td=0; td < data.length-2; td++) {
+                    var newColumn = document.createElement('td');
+                    hourCount = tableRow[tr].locationSalesPerDay()[td];
+                    dailyCount = dailyCount + hourCount;
+                    newColumn.innerHTML = hourCount ;
+                    hourlyTotal[td]=hourlyTotal[td]+hourCount;
+                    newRow.appendChild(newColumn);
+                  }
+                  var newColumn = document.createElement('td');
+                  newColumn.innerHTML = dailyCount;
+                  newRow.appendChild(newColumn);
+                  hourlyTotal[td]=hourlyTotal[td]+dailyCount;
+              }
+              makeFooterRow(hourlyTotal);
+        } 
+      }
 
-var seaTacSalesPerDay = salesDataPerHour(hoursList,
-    seaTacAirportLocation.minimumPerCustomer,
-    seaTacAirportLocation.maximumPerCustomer);
-var seaTacSalesData = SalesPerDayWithText(seaTacSalesPerDay,' Cookies' );
+      makeHeaderRow();
+      render(data);
+      renderSalesData(locationsData)
 
-seaTacAirportLocation.minimumPerCustomer = Math.min.apply(null,seaTacSalesPerDay);
-seaTacAirportLocation.maximumPerCustomer = Math.max.apply(null,seaTacSalesPerDay);
-seaTacAirportLocation.averagePerCustomer = Math.round(averageCookiesPerHour(seaTacSalesPerDay));
-seaTacAirportLocation.totalCookies = totalCookiesSalesPerLocation(seaTacSalesPerDay);
-
-consoleLogs(seaTacAirportLocation.totalCookies,
-    seaTacAirportLocation.name,
-    seaTacAirportLocation.averagePerCustomer,
-    seaTacAirportLocation.minimumPerCustomer,
-    seaTacAirportLocation.maximumPerCustomer,
-    seaTacSalesPerDay);
-
-    var seaTacListElement = document.getElementById('seaTac-location')
-    buildList(seaTacSalesData, seaTacListElement)
-
-var seattleLocation = {
-    minimumPerCustomer: 11,
-    maximumPerCustomer: 38,
-    averagePerCustomer: 3,
-    avgCookies:0,
-    totalCookies:0,
-    name: 'SeattleLocation'  
-}
-
-var seattleSalesPerDay = salesDataPerHour(hoursList,
-    seattleLocation.minimumPerCustomer,
-    seattleLocation.maximumPerCustomer);
-var seattleSalesData = SalesPerDayWithText(seattleSalesPerDay,' Cookies' );
-
-seattleLocation.minimumPerCustomer = Math.min.apply(null,seattleSalesPerDay);
-seattleLocation.maximumPerCustomer = Math.max.apply(null,seattleSalesPerDay);
-seattleLocation.averagePerCustomer = Math.round(averageCookiesPerHour(seattleSalesPerDay));
-seattleLocation.totalCookies = totalCookiesSalesPerLocation(seattleSalesPerDay);
-
-consoleLogs(seattleLocation.totalCookies,
-    seattleLocation.name,
-    seattleLocation.averagePerCustomer,
-    seattleLocation.minimumPerCustomer,
-    seattleLocation.maximumPerCustomer,
-    seattleSalesPerDay);
-
-    var seattleListElement = document.getElementById('seattle-location');
-    buildList(seattleSalesData, seattleListElement);
-
-
-
-var capitalHillLocation = {
-    minimumPerCustomer: 20,
-    maximumPerCustomer: 38,
-    averagePerCustomer: 2,
-    avgCookies:0,
-    totalCookies:0,
-    name: 'CapitalHillLocation'  
-}
-
-var capitalHillSalesPerDay = salesDataPerHour(hoursList,
-    capitalHillLocation.minimumPerCustomer,
-    capitalHillLocation.maximumPerCustomer);
-var capitalHillSalesData = SalesPerDayWithText(capitalHillSalesPerDay,' Cookies' );
-
-capitalHillLocation.minimumPerCustomer = Math.min.apply(null,capitalHillSalesPerDay);
-capitalHillLocation.maximumPerCustomer = Math.max.apply(null,capitalHillSalesPerDay);
-capitalHillLocation.averagePerCustomer = Math.round(averageCookiesPerHour(capitalHillSalesPerDay));
-capitalHillLocation.totalCookies = totalCookiesSalesPerLocation(capitalHillSalesPerDay);
-
-consoleLogs(capitalHillLocation.totalCookies,
-    capitalHillLocation.name,
-    capitalHillLocation.averagePerCustomer,
-    capitalHillLocation.minimumPerCustomer,
-    capitalHillLocation.maximumPerCustomer,
-    capitalHillSalesPerDay);
-
-    var capitalHillListElement = document.getElementById('capitalhill-location');
-    buildList(capitalHillSalesData, capitalHillListElement);
-
-var alkiLocation = {
-    minimumPerCustomer: 2,
-    maximumPerCustomer: 16,
-    averagePerCustomer: 4,
-    avgCookies:0,
-    totalCookies:0,
-    name: 'AlkiLocation'  
-}
-
-var alkiSalesPerDay = salesDataPerHour(hoursList,
-    alkiLocation.minimumPerCustomer,
-    alkiLocation.maximumPerCustomer);
-var alkiSalesData = SalesPerDayWithText(alkiSalesPerDay,' Cookies' );
-
-alkiLocation.minimumPerCustomer = Math.min.apply(null,alkiSalesPerDay);
-alkiLocation.maximumPerCustomer = Math.max.apply(null,alkiSalesPerDay);
-alkiLocation.averagePerCustomer = Math.round(averageCookiesPerHour(alkiSalesPerDay));
-alkiLocation.totalCookies = totalCookiesSalesPerLocation(alkiSalesPerDay);
-
-consoleLogs(alkiLocation.totalCookies,
-    alkiLocation.name,
-    alkiLocation.averagePerCustomer,
-    alkiLocation.minimumPerCustomer,
-    alkiLocation.maximumPerCustomer,
-    alkiSalesPerDay);
-
-    var alkiListElement = document.getElementById('alki-location');
-    buildList(alkiSalesData, alkiListElement);
 
     function showAboutUs() {
         document.getElementById("specials").style.display="none";
@@ -235,15 +184,7 @@ consoleLogs(alkiLocation.totalCookies,
         document.getElementById('contactus').style.display = "none";
         document.getElementById('hours').style.display = "block";
      }
-    
-     function showSpecials() {
-        document.getElementById("hours").style.display="none";
-        document.getElementById("location").style.display="none";
-        document.getElementById('aboutus').style.display = "none";
-        document.getElementById('contactus').style.display = "none";
-        document.getElementById('specials').style.display = "block";
-     }
-    
+
      function showContactUs() {
         document.getElementById("hours").style.display="none";
         document.getElementById("location").style.display="none";

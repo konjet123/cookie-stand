@@ -1,10 +1,15 @@
 'use strict';
 var data = [];
-
 var hoursList = ['6.00 am','7.00 am','8.00 am','9.00 am','10.00 am','11.00 am','12.00 am','1.00 pm',
 '2.00 pm','3.00 pm','4.00 pm','5.00 pm','7.00 pm','8.00 pm'];
-
 var locationsData = [];
+
+var table = document.getElementById('shell');
+//var table = document.getElementById('cookieResults');
+var tHeaderRow = document.getElementById('tHeading');
+
+
+var salesFormElement = document.getElementById('SalesInputForm');
 
 function LocationsData(name, 
     minimumPerCustomer, 
@@ -60,14 +65,37 @@ function LocationsData(name,
         }              
   }
 
-var Pike1StreetLocation = new LocationsData('Pike', 23, 65, 6, 0, 0);
-var seaTacAirportLocation = new LocationsData('SeaTacAirportLocation', 3, 24, 1, 0, 0);
-var seattleLocation = new LocationsData('SeattleLocation', 11, 38, 3, 0, 0);
-var capitalHillLocation = new LocationsData('CapitalHillLocation', 20, 38, 2, 0, 0);
-var AlkiLocation = new LocationsData('AlkiLocation', 2, 16, 4, 0, 0);
+  function formData(event) {
+    event.preventDefault();
+  
+    var locationName = event.target.inputIDForLocation.value;
+    var minCustomer = event.target.inputIDForMinimumHourlyCustomers.value;
+    var maxCustomer = event.target.inputIDForMaximumHourlyCustomers.value;
+    var avgCookieCount = event.target.inputIDForAverageCookie.value;
+    
+    locationsData.push(new LocationsData(locationName, minCustomer, maxCustomer, avgCookieCount,0,0));
 
-locationsData.push(Pike1StreetLocation,seaTacAirportLocation,seattleLocation,capitalHillLocation,AlkiLocation);
-
+    if (locationName.length > 0 && locationsData.length > 0) {
+        if ((locationsData.length>0) && (locationsData.length<2)) {
+          makeHeaderRow();
+          render(data);
+        }    
+         var tablelen = document.getElementById('shell').rows.length;
+        for (var i=-1; i < tablelen ; i++) {
+          if (tablelen>2)
+          {
+            document.getElementById('shell').deleteRow(-1);
+          }
+          if (document.getElementById('shell').rows.length > i)
+          {
+             document.getElementById('shell').deleteRow(i);
+           }
+        }
+        renderSalesData(locationsData)
+        salesFormElement.reset();
+      
+    }
+  }  
 
   function consoleLogs(totalCookies,locationName,averageCookies,minCookiesCustomers,
     maxCookiesCustomers,locationSales) {
@@ -78,10 +106,8 @@ locationsData.push(Pike1StreetLocation,seaTacAirportLocation,seattleLocation,cap
     console.log('Maximum customers count :' + maxCookiesCustomers);
     console.log('Total Cookies count :' + totalCookies);
     console.log('    ');
-  }
-
+  }   
     
-    var table = document.getElementById('shell');
 
     //Create td elements data
 function makeTable(locations,firstElement,lastElement){
@@ -94,8 +120,7 @@ function makeTable(locations,firstElement,lastElement){
   }
   tableData.push(finalData+'<td>'+lastElement+'</td>');
 }
-      var table = document.getElementById('cookieResults');
-      var tRow = document.getElementById('tHeading');
+
     function makeHeaderRow() {     
         
         data.push('<td>' + 'Location Name' + '</td>')
@@ -106,28 +131,17 @@ function makeTable(locations,firstElement,lastElement){
         }
         data.push('<td>' + 'Daily Location Total' + '</td>')
         
-      }
-
-      function makeFooterRow(hourlyTotal) {     
-        var newColumn = document.createElement('td');
-        newColumn.innerHTML = 'Totals' ;
-        table.appendChild(newColumn);
-        for (var i=0; i <= hoursList.length; i++) {          
-          newColumn = document.createElement('td');
-          newColumn.innerHTML = hourlyTotal[i];
-          table.appendChild(newColumn);
-        }        
-      }
+      }     
       
       function render(tableRow) {
         for (var j=0; j < tableRow.length; j++) {
           var newColumn = document.createElement('td');
           newColumn.innerHTML = tableRow[j];
           if (table!=null)
-          table.appendChild(newColumn);
+          tHeaderRow.appendChild(newColumn);
         }
       }
-       
+
             
       function renderSalesData(tableRow) {
         if (table!=null)
@@ -156,39 +170,51 @@ function makeTable(locations,firstElement,lastElement){
         } 
       }
 
-      makeHeaderRow();
-      render(data);
-      renderSalesData(locationsData)
+       
+      function makeFooterRow(hourlyTotal) {       
+        
+        document.getElementById("cookieResults").deleteTFoot();
+        var tfooter = document.getElementById("cookieResults").createTFoot();    
+        var newColumn = document.createElement('td');
+         newColumn.innerHTML = 'Totals' ;
+         tfooter.appendChild(newColumn);
+         for (var i=0; i <= hoursList.length; i++) {          
+           newColumn = document.createElement('td');
+           newColumn.innerHTML = hourlyTotal[i];
+           tfooter.appendChild(newColumn);
+         }        
+       }
 
 
     function showAboutUs() {
-        document.getElementById("specials").style.display="none";
-        document.getElementById("hours").style.display="none";
-        document.getElementById("location").style.display="none";
-        document.getElementById('contactus').style.display = "none";
+        document.getElementById('specials').style.display='none';
+        document.getElementById('hours').style.display='none';
+        document.getElementById('location').style.display='none';
+        document.getElementById('contactus').style.display = 'none';
         document.getElementById('aboutus').style.display = "block";
      }
     
      function showLocations() {
-        document.getElementById("specials").style.display="none";
-        document.getElementById("hours").style.display="none";
-        document.getElementById("aboutus").style.display="none";
-        document.getElementById('contactus').style.display = "none";
+        document.getElementById('specials').style.display='none';
+        document.getElementById('hours').style.display='none';
+        document.getElementById('aboutus').style.display='none';
+        document.getElementById('contactus').style.display = 'none';
         document.getElementById('location').style.display = "block";
      }
     
      function showHours() {
-        document.getElementById("specials").style.display="none";
-        document.getElementById("location").style.display="none";
-        document.getElementById('aboutus').style.display = "none";
-        document.getElementById('contactus').style.display = "none";
+        document.getElementById('specials').style.display='none';
+        document.getElementById('location').style.display='none';
+        document.getElementById('aboutus').style.display = 'none';
+        document.getElementById('contactus').style.display = 'none';
         document.getElementById('hours').style.display = "block";
      }
 
      function showContactUs() {
-        document.getElementById("hours").style.display="none";
-        document.getElementById("location").style.display="none";
-        document.getElementById('aboutus').style.display = "none";
-        document.getElementById('specials').style.display = "none";
+        document.getElementById('hours').style.display='none';
+        document.getElementById('location').style.display='none';
+        document.getElementById('aboutus').style.display = 'none';
+        document.getElementById('specials').style.display = 'none';
         document.getElementById('contactus').style.display = "block";
      }
+     salesFormElement.addEventListener('submit', formData);

@@ -1,8 +1,8 @@
-
-  * {
-    font-family: 'Helvetica', sans-serif;gr
+ * {
+    font-family: 'Helvetica', sans-serif; 
    }
-  main ul li{
+
+main ul li{
     color:red;
     font-size: small;
     margin-bottom: 10px;

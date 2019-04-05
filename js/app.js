@@ -65,6 +65,18 @@ function LocationsData(name,
   };
 }
 
+makeHeaderRow();
+render(data);
+var Pike1StreetLocation = new LocationsData('Pike', 23, 65, 6, 0, 0);
+var seaTacAirportLocation = new LocationsData('SeaTacAirportLocation', 3, 24, 1, 0, 0);
+var seattleLocation = new LocationsData('SeattleLocation', 11, 38, 3, 0, 0);
+var capitalHillLocation = new LocationsData('CapitalHillLocation', 20, 38, 2, 0, 0);
+var AlkiLocation = new LocationsData('AlkiLocation', 2, 16, 4, 0, 0);
+
+locationsData.push(Pike1StreetLocation,seaTacAirportLocation,seattleLocation,capitalHillLocation,AlkiLocation);
+
+renderSalesData(locationsData);
+
 function formData(event) {
   event.preventDefault();
 
@@ -78,7 +90,7 @@ function formData(event) {
   if (locationName.length > 0 && locationsData.length > 0) {
     if ((locationsData.length>0) && (locationsData.length<2)) {
       makeHeaderRow();
-      render(data);
+      render(data);      
     }
     var tablelen = document.getElementById('shell').rows.length;
     for (var i=-1; i < tablelen ; i++) {
@@ -194,4 +206,5 @@ function showContactUs() {
   document.getElementById('specials').style.display = 'none';
   document.getElementById('contactus').style.display = 'block';
 }
+
 salesFormElement.addEventListener('submit', formData);

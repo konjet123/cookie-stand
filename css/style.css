@@ -1,16 +1,14 @@
-@font-face {
-    font-family: myFirstFont;
-    src: url(sansation_light.woff);
-  }
+
+  * {
+    font-family: 'Helvetica', sans-serif;gr
+   }
   main ul li{
-    font-family: 'Open Sans';
     color:red;
     font-size: small;
     margin-bottom: 10px;
 }
 
 nav ul li{
-  font-family: 'Open Sans';
   font-size: small;
   margin-bottom: 10px;
 
@@ -20,15 +18,16 @@ header nav li {
   display: inline-block;
   margin-right: 30px;
   margin-top: 45px;
-  
+  font-family: 'Righteous', cursive;
 }
 #head3{
-  
+  font-family: 'Righteous', cursive; 
   margin-left: 30px;
 
 }
 
 header {
+  font-family: 'Righteous', cursive;
   background: #000;
   height: 160px;
 }
@@ -37,6 +36,7 @@ table {
   margin: auto;
   text-align: center;
   border: 2px solid black;
+  font-family: 'Righteous', cursive;
 }
 tr {
   padding: 5px;
@@ -47,7 +47,26 @@ tr {
 
 td {
   padding: 5px;
+  border-radius: 6px;
   border: 1px solid black;
   margin: auto;
   background-color: aqua;
+  font-size: 1.2em;
+}
+
+th {
+	background-color: gray;
+	color: white;
+  padding: 2px;
+  border-radius: 8px;
+  font-size: 1.2em;
+
+}
+label {
+  color: salmon;
+}
+
+legend {
+  color: salmon;
+  font-family: 'Righteous', cursive;
 }
